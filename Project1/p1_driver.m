@@ -23,8 +23,8 @@ ind = find(~isfinite(A(:,2)) |  ~isfinite(A(:,3)) | ~isfinite(A(:,4)) ...
 A(ind,:) = [];
 
 % select CA, OR, WA, NJ, NY counties
-ind = find((A(:,1)>=6000 & A(:,1)<=6999) ...  %CA
-  | (A(:,1)>=53000 & A(:,1)<=53999)); %...        %WA
+ind = find((A(:,1)>=6000 & A(:,1)<=6999)); %...  %CA
+%  | (A(:,1)>=53000 & A(:,1)<=53999)); %...        %WA
 %  | (A(:,1)>=34000 & A(:,1)<=34999) ...        %NJ  
 %  | (A(:,1)>=36000 & A(:,1)<=36999) ...        %NY
 %  | (A(:,1)>=41000 & A(:,1)<=41999));          %OR
@@ -40,27 +40,27 @@ label = zeros(n,1);
 label(idem) = -1;
 label(igop) = 1;
 
-% % select max subset of data with equal numbers of dem and gop counties
-% ngop = length(igop);
-% ndem = length(idem);
-% if ngop > ndem
-%     rgop = randperm(ngop,ndem);
-%     Adem = A(idem,:);
-%     Agop = A(igop(rgop),:);
-%     A = [Adem;Agop];
-% else
-%     rdem = randperm(ndem,ngop);
-%     Agop = A(igop,:);
-%     Adem = A(idem(rdem),:);
-%     A = [Adem;Agop];
-% end  
-% [n,dim] = size(A);
-% idem = find(A(:,2) >= A(:,3));
-% igop = find(A(:,2) < A(:,3));
-% num = A(:,2)+A(:,3);
-% label = zeros(n,1);
-% label(idem) = -1;
-% label(igop) = 1;
+% select max subset of data with equal numbers of dem and gop counties
+ngop = length(igop);
+ndem = length(idem);
+if ngop > ndem
+    rgop = randperm(ngop,ndem);
+    Adem = A(idem,:);
+    Agop = A(igop(rgop),:);
+    A = [Adem;Agop];
+else
+    rdem = randperm(ndem,ngop);
+    Agop = A(igop,:);
+    Adem = A(idem(rdem),:);
+    A = [Adem;Agop];
+end  
+[n,dim] = size(A);
+idem = find(A(:,2) >= A(:,3));
+igop = find(A(:,2) < A(:,3));
+num = A(:,2)+A(:,3);
+label = zeros(n,1);
+label(idem) = -1;
+label(igop) = 1;
 
 % set up matrix data and rescale it to [0,1]
 
@@ -124,7 +124,7 @@ ylabel(str(i2),'Fontsize',fsz);
 zlabel(str(i3),'Fontsize',fsz);
 %title('Separating plane for CA data')
 
-p = patch(isosurface(xx,yy,zz,plane,1));
+p = patch(isosurface(xx,yy,zz,plane,0));
 p.FaceColor = 'green';
 p.EdgeColor = 'none';
 camlight 
