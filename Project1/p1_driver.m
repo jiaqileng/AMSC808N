@@ -23,12 +23,12 @@ ind = find(~isfinite(A(:,2)) |  ~isfinite(A(:,3)) | ~isfinite(A(:,4)) ...
 A(ind,:) = [];
 
 % select CA, OR, WA, NJ, NY counties
-ind = find((A(:,1)>=6000 & A(:,1)<=6999)); %...  %CA
+%ind = find((A(:,1)>=6000 & A(:,1)<=6999)); %...  %CA
 %  | (A(:,1)>=53000 & A(:,1)<=53999)); %...        %WA
 %  | (A(:,1)>=34000 & A(:,1)<=34999) ...        %NJ  
 %  | (A(:,1)>=36000 & A(:,1)<=36999) ...        %NY
 %  | (A(:,1)>=41000 & A(:,1)<=41999));          %OR
-A = A(ind,:);
+%A = A(ind,:);
 
 [n,dim] = size(A);
 
@@ -91,7 +91,7 @@ A21 = zeros(num_data,4);
 A = [A11 A12;A21 A12];
 b = [ones(num_data,1);zeros(num_data,1)];
 
-% find initial guess
+%% find initial guess
 [w,l,lcomp] = FindInitGuess(ones(4,1), A11, ones(num_data,1));
 x0 = [w;lcomp];
 

@@ -19,12 +19,12 @@ ind = find(~isfinite(A(:,2)) |  ~isfinite(A(:,3)) | ~isfinite(A(:,4)) ...
     | ~isfinite(A(:,8)) | ~isfinite(A(:,9)));
 A(ind,:) = [];
 %% select CA, OR, WA, NJ, NY counties
-% ind = find((A(:,1)>=6000 & A(:,1)<=6999)); % ...  %CA
+ ind = find((A(:,1)>=6000 & A(:,1)<=6999)); % ...  %CA
 %  | (A(:,1)>=53000 & A(:,1)<=53999) ...        %WA
 %  | (A(:,1)>=34000 & A(:,1)<=34999) ...        %NJ  
 %  | (A(:,1)>=36000 & A(:,1)<=36999) ...        %NY
 %  | (A(:,1)>=41000 & A(:,1)<=41999));          %OR
-% A = A(ind,:);
+ A = A(ind,:);
 
 [n,dim] = size(A);
 
@@ -37,26 +37,26 @@ label(idem) = -1;
 label(igop) = 1;
 
 %% select max subset of data with equal numbers of dem and gop counties
-ngop = length(igop);
-ndem = length(idem);
-if ngop > ndem
-    rgop = randperm(ngop,ndem);
-    Adem = A(idem,:);
-    Agop = A(igop(rgop),:);
-    A = [Adem;Agop];
-else
-    rdem = randperm(ndem,ngop);
-    Agop = A(igop,:);
-    Adem = A(idem(rdem),:);
-    A = [Adem;Agop];
-end  
-[n,dim] = size(A)
-idem = find(A(:,2) >= A(:,3));
-igop = find(A(:,2) < A(:,3));
-num = A(:,2)+A(:,3);
-label = zeros(n,1);
-label(idem) = -1;
-label(igop) = 1;
+% ngop = length(igop);
+% ndem = length(idem);
+% if ngop > ndem
+%     rgop = randperm(ngop,ndem);
+%     Adem = A(idem,:);
+%     Agop = A(igop(rgop),:);
+%     A = [Adem;Agop];
+% else
+%     rdem = randperm(ndem,ngop);
+%     Agop = A(igop,:);
+%     Adem = A(idem(rdem),:);
+%     A = [Adem;Agop];
+% end  
+% [n,dim] = size(A)
+% idem = find(A(:,2) >= A(:,3));
+% igop = find(A(:,2) < A(:,3));
+% num = A(:,2)+A(:,3);
+% label = zeros(n,1);
+% label(idem) = -1;
+% label(igop) = 1;
 
 %% set up data matrix and visualize
 close all
