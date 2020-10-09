@@ -78,8 +78,9 @@ num_data = length(label);
 Y = diag(label) * [XX ones(num_data,1)];
 
 %% Problem 1: 
-
+% remember to load correct data!!!
 % constraint with soft margins
+tic
 A12 = eye(num_data);
 A21 = zeros(num_data,4);
 A = [Y A12;A21 A12];
@@ -96,42 +97,64 @@ gfun = @(x) gfun_soft(x,C);
 Hfun = @(x) Hfun_soft(x,C);
 [xiter,lm] = ASM(x0,gfun,Hfun,A,b,W);
 w = xiter(1:4,end);
+svntime = toc;
 
 % plot
 plot_plane(XX, w, idem, igop, 'Separating plane for CA data')
-
+fprintf('SVN with soft margin, running time = %d\n',svntime);
 %% Problem 2: stochastic SG
 
 w0 = [-1;-1;1;1];
-lam = .01;
+
+% test batch size: 32, 64, 128
 batch_size = 128;
+
+% test decreasing strategy: 0, 1.
+flag = 0;
+
+% test regularization parameter
+% lam = 0.001, 0.01, 0.1, 1.
+lam = .01;
+
 maxiter = 2e3;
 time = zeros(1,100);
 fun_sum = zeros(1,maxiter);
 
 for k = 1:1000
     tic
-    [fun_val, gnorm] = sgd(w0,Y,lam,batch_size,maxiter,0);
+    [fun_val, gnorm, w] = sgd(w0,Y,lam,batch_size,maxiter,flag);
     time(k) = toc;
     fun_sum = fun_sum + fun_val;
     fprintf('k = %d\n',k);
 end
 fprintf('running time = %d\n', mean(time));
 %
-fun_average_sgd = fun_sum./1000;
-%%
+fun_average_batch_128 = fun_sum./1000;
+%% Plot
 figure;
-plot(1:maxiter,fun_average_sgd,'b-','Linewidth',3);
+plot(1:maxiter,fun_average_batch_32,'b-','Linewidth',3);
+hold on
+plot(1:maxiter,fun_average_batch_64,'r-','Linewidth',3);
+plot(1:maxiter,fun_average_batch_128,'g-','Linewidth',3);
+legend('batch=32','batch=64','batch=128');
+xlabel('no. of iterations');
+ylabel('averaged function value');
 title('average function value v.s iterations')
 
-% add more plots based on Zezheng's writing
+% separating plane
+figure;
+plot_plane(XX, w, idem, igop, 'Separating plane for lam = 0.01');
 
 %% Problem 3: Subsampled inexact Newton
 w0 = [-1;-1;1;1];
 fun = @(I,Y,w) fun0(I,Y,w,lam);
 gfun = @(I,Y,w) gfun0(I,Y,w,lam);
 Hvec = @(I,Y,w,v) Hvec0(I,Y,w,v,lam);
-batch_size = 256;
+
+% test batch_size: 32, 64, 128
+batch_size = 128;
+
+
 maxiter = 2e3;
 fun_sum = zeros(1,maxiter);
 time = zeros(1,1000);
@@ -144,14 +167,18 @@ for k = 1:1000
     fprintf('k = %d\n',k);
 end
 fprintf('running time = %d\n', mean(time));
-fun_average_SINewton = fun_sum./1000;
-%%
+fun_average_SINewton_128 = fun_sum./1000;
+
+%% plot
 figure;
-plot(1:maxiter, fun_average_SINewton);
-%%
-figure;
-plot_plane(XX, w, idem, igop, 'subsampled inexact Newton')
-% add more plots based on Chenyang's writing
+plot(1:maxiter, fun_average_SINewton_32);
+hold on
+plot(1:maxiter, fun_average_SINewton_64);
+plot(1:maxiter, fun_average_SINewton_128);
+legend('batch=32','batch=64','batch=128');
+xlabel('no. of iterations');
+ylabel('averaged function value');
+title('Plot of average function value f vs iteration number for Subsampled inexact Newton method');
 
 %% Problem 4: stochastic L-BFGS
 
