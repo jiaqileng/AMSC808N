@@ -21,7 +21,7 @@ df(nv+1 : nv+nw) = x.*(v.*s1);
 df(nv+nw+1 : end) = v.*s1;
 % dfx
 dfx(1:nv) = W.*s1;
-dfx(nv+1 : nv+nw) = (v.*W.*s2).*x + (v.*s1);
+dfx(nv+1 : nv+nw) = x.*(v.*W.*s2) + (v.*s1);
 dfx(nv+nw+1 : end) = v.*W.*s2;
 
 end
