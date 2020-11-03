@@ -35,26 +35,27 @@ end
 figure;
 for a = 1:L2
     text = sprintf('a = %d',a);
-    plot(2:L1, numerator(:,a)'./denomenator,...
-        'DisplayName',text,'LineWidth',3);
+    plot(2:L1, numerator(:,a)'./denomenator,'-s',...
+        'DisplayName',text,'LineWidth',2);
     hold on
 end
+plot(2:L1,ones(1,L1-1),'--','DisplayName','ref');
 xlabel('k');
 ylabel('ratio');
 legend;
-title('ratio v.s. k')
+title('$\|M-CUR\|_F/\|M-M_k\|_F$','Interpreter','latex')
 
 figure;
 for a = 1:L2
     text = sprintf('a = %d',a);
-    plot(2:L1, numerator(:,a)',...
-        'DisplayName',text,'LineWidth',3);
+    plot(2:L1, numerator(:,a)','-s',...
+        'DisplayName',text,'LineWidth',2);
     hold on
 end
 xlabel('k');
 ylabel('F-norm');
 legend;
-title('F-norm v.s. k')
+title('$\|M-CUR\|_F$','Interpreter','latex')
 %%
 function C = columnselect(A,V,k,c)
 [m,n] = size(A);
