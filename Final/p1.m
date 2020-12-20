@@ -32,7 +32,8 @@ for k = 1:5
 end
 plot(a3, xx(6).*a3 - gx(6), 'b-','LineWidth',3);
 plot(amin,bmin,'o','LineWidth',3)
-text(-3,3,'$\Omega$','Interpreter','latex','FontSize',20)
+text(-3,3,'$\mathcal{F}$: the flat region','Interpreter','latex','FontSize',20)
+text(3,-3,'$\Omega$','Interpreter','latex','FontSize',20)
 xlabel('a')
 ylabel('b')
 %% Part II.
@@ -45,6 +46,7 @@ hold on
 plot(a, 0.*a, 'r--','LineWidth',3);
 plot(a, (g(2)/g(1)).*(a-1),'b-','LineWidth',3);
 plot(1,0,'ko','LineWidth',5);
+text(0.4,2,'$\mathcal{F}$: the flat region','Interpreter','latex','FontSize',20)
 annotation('textarrow',[0.5 0.4],[0.5 0.4],'String','descent direction')
 xlabel('a')
 ylabel('b')
