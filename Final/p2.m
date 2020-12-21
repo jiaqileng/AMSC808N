@@ -20,7 +20,7 @@ T = 0.4;
 eqnRightT = polylog(alpha-1,1-T+T.*x)./((1-T+T.*x).*polylog(alpha-1,1));
 
 uT = vpasolve(eqnLeft == eqnRightT, x);
-ST = 1 - polylog(alpha,1-T+T.*u)./polylog(alpha,1);
+ST = 1 - polylog(alpha,1-T+T.*uT)./polylog(alpha,1);
 fprintf('u(T) is the smallest non-negative solution to x=G1(x;T).\n u(T) = %d.\n', double(uT));
 fprintf('S(T) is the fraction of the infected nodes.\n S(T) = %d.\n', double(ST));
 % figure;
